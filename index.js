@@ -34,12 +34,34 @@ async function run() {
         })
 
         app.get('/mymovies', async (req, res) => {
+            // console.log(req.query.email);
             let query = {};
-            if (req.params?.email) {
-                email = req.params.email
+            if (req.query?.email) {
+                query = { email: req.query.email }
             }
             const result = await movieCollections.find(query).sort({ entryDate: -1 }).toArray();
             res.send(result)
+        })
+
+        app.get('/mymovies/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const result = await movieCollections.findOne(filter);
+            res.send(result);
+        })
+
+        app.patch('/mymovies/:id', async (req, res) => {
+            const id = req.params.id;
+            const movie = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const updateMovie = {
+                $set: {
+                    ...movie
+                }
+            }
+            const result = await movieCollections.updateOne(filter, updateMovie);
+            res.send(result);
+            console.log(result);
         })
 
         app.post('/movies', async (req, res) => {
