@@ -27,9 +27,15 @@ async function run() {
         await client.connect();
 
         const movieCollections = client.db('movieDB').collection('movies');
+        const upcommingMovieCollections = client.db('movieDB').collection('upcomingMovie');
 
         app.get('/movies', async (req, res) => {
             const result = await movieCollections.find().sort({ entryDate: -1 }).toArray();
+            res.send(result);
+        })
+
+        app.get('/upcomingMovies', async (req, res) => {
+            const result = await upcommingMovieCollections.find().toArray();
             res.send(result);
         })
 
