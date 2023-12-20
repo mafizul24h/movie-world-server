@@ -77,6 +77,21 @@ async function run() {
             console.log(result);
         })
 
+        app.patch('/watchMovie/:id', async (req, res) => {
+            const id = req.params.id;
+            // console.log(id);
+            const watchMovie = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const updateMovie = {
+                $set: {
+                    watchUser: watchMovie.watchUser,
+                    status: watchMovie.status
+                }
+            }
+            const result = await movieCollections.updateOne(filter, updateMovie);
+            res.send(result);
+        })
+
         app.post('/movies', async (req, res) => {
             const movie = req.body;
             movie.entryDate = new Date();
