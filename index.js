@@ -34,6 +34,13 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/movies/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const result = await movieCollections.findOne(filter);
+            res.send(result);
+        })
+
         app.get('/upcomingMovies', async (req, res) => {
             const result = await upcommingMovieCollections.find().toArray();
             res.send(result);
