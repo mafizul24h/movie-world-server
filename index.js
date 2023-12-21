@@ -63,6 +63,13 @@ async function run() {
             res.send(result);
         })
 
+        app.post('/movies', async (req, res) => {
+            const movie = req.body;
+            movie.entryDate = new Date();
+            const result = await movieCollections.insertOne(movie);
+            res.send(result);
+        })
+
         app.patch('/mymovies/:id', async (req, res) => {
             const id = req.params.id;
             const movie = req.body;
@@ -89,13 +96,6 @@ async function run() {
                 }
             }
             const result = await movieCollections.updateOne(filter, updateMovie);
-            res.send(result);
-        })
-
-        app.post('/movies', async (req, res) => {
-            const movie = req.body;
-            movie.entryDate = new Date();
-            const result = await movieCollections.insertOne(movie);
             res.send(result);
         })
 
